@@ -1,0 +1,5 @@
+export const AUTH = "AUTH"
+export const AUTH_FULFILLED = AUTH+"_FULFILLED"
+export const AUTH_REJECTED= AUTH+"_REJECTED"
+export const AUTH_PENDING= AUTH+"_PENDING"
+export const DEAUTH= "DEAUTH"
