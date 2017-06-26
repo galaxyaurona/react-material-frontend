@@ -9,9 +9,10 @@ import { createStore, applyMiddleware, compose } from "redux"
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 import reducers from "./reducers"
-import  promiseMiddleware from "redux-promise-middleware"
+import promiseMiddleware from "redux-promise-middleware"
 
 import { Switch, Route } from "react-router"
+import {AUTH_FULFILLED} from "./actions/types"
 import {
     BrowserRouter,
     Link,
@@ -32,6 +33,13 @@ const store = createStore(reducers, composeWithDevTools(
     ),
     // other store enhancers if any
 ));
+const token = localStorage.getItem("token")
+if (token) {
+    store.dispatch({
+        type: AUTH_FULFILLED
+    })
+}
+
 
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941

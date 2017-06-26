@@ -2,7 +2,7 @@ import { AUTH, AUTH_PENDING,
         AUTH_FULFILLED, AUTH_REJECTED, DEAUTH } 
 from "../../actions/types"
 
-const authInitialState = {authenticated:true}
+const authInitialState = {}
 
 const authReducer = (state = authInitialState, action) => {
     switch (action.type) {
