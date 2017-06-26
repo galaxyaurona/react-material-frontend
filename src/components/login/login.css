@@ -1,0 +1,21 @@
+.login-component__wrapper {
+  height: 100%; }
+
+.login-form {
+  height: 100%; }
+
+.form__header-text--custom-margin {
+  margin: 15px 20px; }
+
+.hr--no-margin {
+  margin: 0px; }
+
+.form__text-field--full-width {
+  width: 100% !important;
+  margin-bottom: 10px; }
+
+.button-row {
+  margin: 20px 20px; }
+
+.form-content {
+  margin: 0px 20px; }

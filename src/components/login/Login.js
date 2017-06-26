@@ -67,7 +67,9 @@ class Login extends Component {
         }
         // prevent unspecified html attribute 
         delete field.refProps
-
+        field.errorStyle = {
+            float:"left"
+        }
         return (
 
             <Field
@@ -87,7 +89,7 @@ class Login extends Component {
             component: TextField,
             hintText: "Email",
             floatingLabelText: "Email",
-            className: "col-xs-12",
+            className: "form__text-field--full-width",
             validate: [emailRequired, emailValidation],
             refProps: {
                 ref: "email",
@@ -98,7 +100,7 @@ class Login extends Component {
             name: "password",
             type: "password",
             component: TextField,
-            className: "col-xs-12",
+            className: "form__text-field--full-width",
             hintText: "Password",
             floatingLabelText: "Password",
             validate: [passwordRequired],
@@ -107,17 +109,21 @@ class Login extends Component {
         const formFields = [emailField, passwordField]
         const { handleSubmit, pristine, submitting } = this.props
         return (
-            <div className="login-wrapper flexbox-container">
+            <div className="login-component__wrapper flexbox-container">
 
                 <Paper className="" style={cardStyle} zDepth={2} >
-                    <form onSubmit={handleSubmit(this.handleOnSubmit.bind(this))}>
-                        <h3 className="">Login</h3>
-                        <hr />
-                        {formFields.map(field => this.renderMaterialTextInput(field), this)}
+                    <form className="login-form" onSubmit={handleSubmit(this.handleOnSubmit.bind(this))}>
+                        <h3 className="form__header-text--custom-margin ">Login</h3>
+                        <hr className="hr--no-margin" />
+                        <div className="form-content">
+                            {formFields.map(field => this.renderMaterialTextInput(field), this)}
+                        </div>
 
-                        <div className="col-xs-12">
-                            <RaisedButton disabled={submitting} primary={true} type="submit" label="Login"></RaisedButton>
-                            <RaisedButton disabled={submitting} secondary={true} type="button" label="Sign up"></RaisedButton>
+
+                        <div className="button-row">
+                           
+                            <RaisedButton className="pull-right" disabled={submitting} secondary={true} type="button" label="Sign up"></RaisedButton>
+                            <RaisedButton className="pull-right" style={{marginRight:"30px"}} disabled={submitting} primary={true} type="submit" label="Login"></RaisedButton>
                         </div>
 
                     </form>

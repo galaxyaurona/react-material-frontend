@@ -1,0 +1,27 @@
+$margin-left: 20px;
+
+.login-component__wrapper{
+    height: 100%
+}
+.login-form {
+
+    height: 100%;
+}
+.form__header-text--custom-margin{
+    margin: 15px $margin-left;
+}
+
+.hr--no-margin{
+    margin: 0px;
+}
+.form__text-field--full-width{
+    width: 100% !important;
+    margin-bottom:  10px;
+}
+.button-row{
+
+    margin: 20px $margin-left;
+}
+.form-content {
+    margin:0px $margin-left ;
+}
