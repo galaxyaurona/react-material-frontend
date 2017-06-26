@@ -33,10 +33,13 @@ const store = createStore(reducers, composeWithDevTools(
     ),
     // other store enhancers if any
 ));
+
+// TODO: make sure token is verified with AJAX request to backend first
+// then deauth// auth accordingly
 const token = localStorage.getItem("token")
 if (token) {
     store.dispatch({
-        type: AUTH_FULFILLED
+        "type": AUTH_FULFILLED
     })
 }
 

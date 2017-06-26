@@ -6,6 +6,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from "material-ui/RaisedButton"
 import { NoMatch } from "../no-match"
 import { Login } from "../login"
+import { Signup } from "../signup"
 import { Switch, Route } from "react-router"
 import { Header } from "../header"
 class App extends Component {
@@ -18,6 +19,8 @@ class App extends Component {
           <Switch>
         
             <Route path="/login" component={Login}>
+            </Route>
+            <Route path="/signup" component={Signup}>
             </Route>
             <Route component={NoMatch}></Route>
           </Switch>

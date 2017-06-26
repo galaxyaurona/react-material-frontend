@@ -8,31 +8,19 @@ import { bindActionCreators } from "redux"
 import {
     TextField
 } from "redux-form-material-ui"
+import { requiredValidatorGenerator, emailValidatorGenerator } from "../../utils"
 
-
-// TODO: fix the styling here
+// TODO: fix the styling here , left align stuff , add breakline on the form
 import "./login.css"
-
+// TODO: change card style into
 const cardStyle = {
     height: 300,
     width: 450,
     margin: 20,
-    textAlign: 'center',
-    display: 'flex',
+    textAlign: 'left',
+    display: 'block',
 };
 // TODO: migrate these 2 function to separate utils file
-
-// validation function
-function requiredValidatorGenerator(error = "Required") {
-    return value => (value == null ? error : undefined);
-}
-
-function emailValidatorGenerator(error = "Invalid email") {
-    return value =>
-        (value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
-            ? error
-            : undefined);
-}
 
 const emailValidation = requiredValidatorGenerator("Email is required")
 const emailRequired = emailValidatorGenerator("Please input a valid email")
@@ -48,7 +36,7 @@ class Login extends Component {
             .focus(); // on TextField
     }
 
-
+    // TODO: fix submit doesn't 
     handleOnSubmit({ email, password }) {
         console.log("submitting,b4", this.props)
 
@@ -58,7 +46,7 @@ class Login extends Component {
             if (response.data.success) {
                 // and it's defnitely success
                 // handle JWT saving to local storage here
-                localStorage.setItem("token",response.data.token)
+                localStorage.setItem("token", response.data.token)
                 //redirect to root route
                 this.props.history.push("/")
             }
@@ -81,12 +69,13 @@ class Login extends Component {
         delete field.refProps
 
         return (
-            <div key={field.name} className="col-xs-12">
-                <Field
-                    {...field}
-                    {...fieldRefProps}
-                />
-            </div>
+
+            <Field
+                key={field.name}
+                {...field}
+                {...fieldRefProps}
+            />
+
 
         )
     }
@@ -98,6 +87,7 @@ class Login extends Component {
             component: TextField,
             hintText: "Email",
             floatingLabelText: "Email",
+            className: "col-xs-12",
             validate: [emailRequired, emailValidation],
             refProps: {
                 ref: "email",
@@ -108,6 +98,7 @@ class Login extends Component {
             name: "password",
             type: "password",
             component: TextField,
+            className: "col-xs-12",
             hintText: "Password",
             floatingLabelText: "Password",
             validate: [passwordRequired],
@@ -121,11 +112,14 @@ class Login extends Component {
                 <Paper className="" style={cardStyle} zDepth={2} >
                     <form onSubmit={handleSubmit(this.handleOnSubmit.bind(this))}>
                         <h3 className="">Login</h3>
+                        <hr />
                         {formFields.map(field => this.renderMaterialTextInput(field), this)}
 
+                        <div className="col-xs-12">
+                            <RaisedButton disabled={submitting} primary={true} type="submit" label="Login"></RaisedButton>
+                            <RaisedButton disabled={submitting} secondary={true} type="button" label="Sign up"></RaisedButton>
+                        </div>
 
-                        <RaisedButton disabled={submitting} primary={true} type="submit" label="Login"></RaisedButton>
-                        <RaisedButton disabled={submitting} secondary={true} type="button" label="Sign up"></RaisedButton>
                     </form>
 
                 </Paper>

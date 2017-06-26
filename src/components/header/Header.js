@@ -8,6 +8,7 @@ import { Link } from "react-router-dom"
 import { connect } from "react-redux"
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import {RightMenuLoggedIn} from "./"
+// TODO: convert these right menu button to using flex box instead
 // TODO: consider moving These button tho it's own file
 const RightMenuNotLoggedIn = (props) => {
     return (
@@ -27,12 +28,13 @@ const RightMenuNotLoggedIn = (props) => {
 class Header extends Component {
 
     render() {
-        //TODO : improve upon this styling
-        //TODO: change it to flexbox container
+        // TODO: improve upon this styling
+        // TODO: remove Link decorator and add some hover styling
+        // TODO: change it to flexbox container
         const style = { marginTop: "14px" }
         const appBarProps = {
             title: <Link to="/">React Material</Link>,
-            showMenuIconButton: this.props.auth.authenticated == true,
+            showMenuIconButton: this.props.auth.authenticated === true,
             iconElementRight: this.props.auth.authenticated ? <RightMenuLoggedIn /> : <RightMenuNotLoggedIn />,
        
         }
