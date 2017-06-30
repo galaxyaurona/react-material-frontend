@@ -7,6 +7,7 @@ export {default as AppComponent} from "./app"
 export {default as NoMatchComponent} from "./no-match"
 export {default as LoginComponent} from "./login"
 export {default as HeaderComponent} from "./header"
+export {default as DashboardComponent} from "./dashboard"
 export default myself
 
  

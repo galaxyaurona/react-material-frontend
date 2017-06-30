@@ -7,7 +7,7 @@ const signupReducer = (state = signupInitialState, action) => {
     switch (action.type) {
         case EMAIL_VALIDATED:
             // if is checking email and the email is in cached state
-            if (state.emailChecking && (state.email === action.payload.email))
+            if (state.emailChecking && (state.email == action.payload.email))
                 return { ...state, emailUsable: true, emailChecking: false, message: action.payload.message}
             else
                 return state
@@ -15,8 +15,8 @@ const signupReducer = (state = signupInitialState, action) => {
          
             return { ...state, emailUsable: false, emailChecking: true, email: action.payload,message: undefined }
         case EMAIL_EXIST:
-            if (state.emailChecking && (state.email === action.payload.email)) {
-                console.log("rewiring state",action.payload)
+            if (state.emailChecking && (state.email == action.payload.email)) {
+       
                 return { ...state, emailUsable: false, emailChecking: false, message: action.payload.message }
             }
                 

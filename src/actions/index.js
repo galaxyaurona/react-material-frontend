@@ -1,6 +1,7 @@
 import axios from "axios"
 import { API_URL } from "../utils/constants"
-import { AUTH, DEAUTH, EMAIL_CHECKING_CANCELLED,CHECK_EMAIL_EXISTING } from "./types"
+import { AUTH, DEAUTH, EMAIL_CHECKING_CANCELLED,CHECK_EMAIL_EXISTING,AUTH_CLEAR_REJECT_ERROR,
+         AUTH_SUCCESS_REDIRECT,AUTH_SUCCESS_REDIRECT_FULFILLED } from "./types"
 import ReduxThunk from 'redux-thunk'
 export function loginUser({ email, password }, successCallback, errorCallback) {
     // submit email and password to user
@@ -47,6 +48,24 @@ export function unmountSignup(){
     return {
         type: EMAIL_CHECKING_CANCELLED,
     
+    }
+}
+export function clearAuthRejectErrors(src){
+    return {
+        type: AUTH_CLEAR_REJECT_ERROR,
+        payload:src
+    }
+}
+export function authSuccessRedirect(message){
+    return {
+        type: AUTH_SUCCESS_REDIRECT,
+        payload: message
+    }
+}
+export function authSuccessRedirectFulfilled(message){
+    return {
+        type: AUTH_SUCCESS_REDIRECT_FULFILLED,
+        payload: message
     }
 }
 

@@ -10,8 +10,7 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import {RightMenuLoggedIn} from "./"
 import "./header.css"
 
-// TODO: convert these right menu button to using flex box instead
-// TODO: consider moving These button tho it's own file
+
 const RightMenuNotLoggedIn = (props) => {
     
     return (

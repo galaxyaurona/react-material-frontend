@@ -3,7 +3,7 @@ import { Field, reduxForm, formValueSelector } from "redux-form"
 import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
 import { connect } from "react-redux";
-import { signupUser, unmountSignup } from "../../actions"
+import { signupUser, unmountSignup, authSuccessRedirect } from "../../actions"
 import { bindActionCreators } from "redux"
 import axios from "axios"
 import { API_URL } from "../../utils/constants"
@@ -19,7 +19,7 @@ import {
 } from "../../utils"
 import "./signup.css"
 import Rx from "rxjs/Rx"
-import {EMAIL_VALIDATING,EMAIL_VALIDATED,EMAIL_EXIST} from "../../actions/types"
+import {EMAIL_VALIDATING,EMAIL_VALIDATED,EMAIL_EXIST,EMAIL_CHECKING_CANCELLED} from "../../actions/types"
 const emailValidation = requiredValidatorGenerator("Email is required")
 const emailRequired = emailValidatorGenerator("Please input a valid email")
 const passwordRequired = requiredValidatorGenerator("Password is required")
@@ -32,16 +32,17 @@ const passwordMatch = (value, allValues, props) => {
     else
         return undefined
 }
-// TODO: ADD progress bar when submitting
-// TODO: 
+
 // FIXME: THERE IS A GLITCH BECAUSE THROWING ERROR WITHOUT CHECKING IF CURRENT EMAIL IS EQUAL TO STATE EMAIL
 const asyncValidate = ({ email }, dispatch, props) => {
   
     if (email != props.signup.email) {
+        // dispatch action notify email being validating
         dispatch({
-            type: EMAIL_EXIST,
+            type: EMAIL_VALIDATING,
             payload: email
         })
+        // also clear all errors
         props.clearAsyncError()
 
 
@@ -57,6 +58,7 @@ const asyncValidate = ({ email }, dispatch, props) => {
 
 
         }, error => {
+            //TODO: handle no internet connection here
             if (error.response.status == 422) {
                 let message = { email: "This email has been used", emailExist: true }
                 dispatch({
@@ -91,7 +93,7 @@ const asyncValidate = ({ email }, dispatch, props) => {
 class Signup extends Component {
 
     handleOnSubmit({ email, password }) {
-        console.log("submitting")
+ 
         return this.props.signupUser({ email, password }, response => {
             // god response from server
 
@@ -99,8 +101,9 @@ class Signup extends Component {
                 // and it's defnitely success
                 // handle JWT saving to local storage here
                 localStorage.setItem("token", response.data.token)
-                //redirect to root route
-                this.props.history.push("/")
+                //redirect to root route, use HOC auth guard
+                //this.props.history.push("/")
+                this.props.authSuccessRedirect("You have succesfully created an account! Redirecting...")
             }
         }, (error) => {
             console.log("reject error ", error)
@@ -163,6 +166,7 @@ class Signup extends Component {
                     <form className="form--full-height" onSubmit={handleSubmit(this.handleOnSubmit.bind(this))}>
                         <h2 className="form__header-text--custom-margin ">Sign up </h2>
                         <hr className="hr--no-margin" />
+                        {submitting ? <LinearProgress></LinearProgress> : undefined}
                         <div className="form__content">
                             {formFieldsRendered}
                         </div>
@@ -192,7 +196,8 @@ const SignUpForm = reduxForm({
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         signupUser: bindActionCreators(signupUser, dispatch),
-        unmountSignup: bindActionCreators(unmountSignup, dispatch)
+        unmountSignup: bindActionCreators(unmountSignup, dispatch),
+        authSuccessRedirect:bindActionCreators(authSuccessRedirect,dispatch)
     }
 }
 const mapStateToProps = (state, ownProps) => {

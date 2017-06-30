@@ -12,7 +12,7 @@ import reducers from "./reducers"
 import promiseMiddleware from "redux-promise-middleware"
 import thunk from 'redux-thunk';
 import { Switch, Route } from "react-router"
-import {AUTH_FULFILLED} from "./actions/types"
+import {AUTH_FULFILLED,DEAUTH} from "./actions/types"
 import {
     BrowserRouter,
     Link,
@@ -42,7 +42,11 @@ if (token) {
     store.dispatch({
         "type": AUTH_FULFILLED
     })
-}
+}else{
+    store.dispatch({
+        "type": DEAUTH
+    })
+} 
 
 
 // Needed for onTouchTap

@@ -3,12 +3,13 @@ import { Field, reduxForm, formValueSelector } from "redux-form"
 import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
 import { connect } from "react-redux";
-import { loginUser } from "../../actions"
+import { loginUser, clearAuthRejectErrors, authSuccessRedirect } from "../../actions"
 import { bindActionCreators } from "redux"
 import {
     TextField
 } from "redux-form-material-ui"
 import CircularProgress from 'material-ui/CircularProgress';
+import LinearProgress from 'material-ui/LinearProgress';
 import {
     requiredValidatorGenerator,
     emailValidatorGenerator,
@@ -35,9 +36,9 @@ class Login extends Component {
             .focus(); // on TextField*/
     }
     componentWillUpdate(nextProps, nextState) {
-        console.log("next props", nextProps.auth)
+
     }
-  
+
     handleOnSubmit({ email, password }) {
 
 
@@ -48,15 +49,38 @@ class Login extends Component {
                 // and it's defnitely success
                 // handle JWT saving to local storage here
                 localStorage.setItem("token", response.data.token)
-                //redirect to root route
-                this.props.history.push("/")
+                //redirect to root route, use HOC auth guards
+                //this.props.history.push("/")
+                // to open the modal
+                this.props.authSuccessRedirect("You have succesfully log in! Redirecting...")
             }
         }, (error) => {
-            console.log("error callback toplevel", error)
+            // so, expoiting the state change will trigger component re rendering
+            // we can set the errorText directly
+            // then clear it in the onChange
+            console.log("error callback toplevel", error.response.data)
+
         })
     }
 
+    handleEmailChange(event) {
+        this.props.clearAuthRejectErrors("email")
+    }
+    handlePasswordChange(event) {
+        this.props.clearAuthRejectErrors("password")
+
+    }
+    renderRejectError(source) {
+
+        if (this.props.auth.error && this.props.auth.error.source == source) {
+
+            return this.props.auth.error.msg
+        } else {
+            return undefined
+        }
+    }
     render() {
+        console.log("login props", this.props)
         const { handleSubmit, pristine, submitting } = this.props
         const emailField = {
             name: "email",
@@ -70,7 +94,9 @@ class Login extends Component {
                 ref: "email",
                 withRef: true
             },
+            errorText: this.renderRejectError("email"),
             disabled: submitting,
+            onChange: this.handleEmailChange.bind(this)
         }
         const passwordField = {
             name: "password",
@@ -81,18 +107,20 @@ class Login extends Component {
             floatingLabelText: "Password",
             validate: [passwordRequired],
             disabled: submitting,
+            errorText: this.renderRejectError("password"),
+            onChange: this.handlePasswordChange.bind(this)
         }
         const formFields = [emailField, passwordField]
         const circularProgressProp = {
             color: "white",
             size: 20,
-            style:{
-                top:"8px",
-                right:"8px"
+            style: {
+                top: "8px",
+                right: "8px"
             },
-            thickness:2
+            thickness: 2
         }
-        // TODO: display error here base on form
+
         return (
             <div className="compoment__wrapper--flex-centering-all">
 
@@ -100,6 +128,7 @@ class Login extends Component {
                     <form className="form--full-height" onSubmit={handleSubmit(this.handleOnSubmit.bind(this))}>
                         <h2 className="form__header-text--custom-margin ">Login</h2>
                         <hr className="hr--no-margin" />
+                        {submitting ? <LinearProgress></LinearProgress> : undefined}
                         <div className="form__content">
                             {formFields.map(field => renderMaterialInput(field), this)}
                         </div>
@@ -112,7 +141,7 @@ class Login extends Component {
                                 className="pull-right"
                                 secondary={true}
                                 type="button"
-
+                                disabled={submitting}
                                 label="Sign up">
 
                             </RaisedButton>
@@ -122,7 +151,7 @@ class Login extends Component {
                                 disabled={submitting}
                                 primary={true}
                                 type="submit"
-                                children={submitting ? <CircularProgress {...circularProgressProp}  /> : undefined}
+
                                 label="Login"
                                 labelPosition="before">
 
@@ -136,6 +165,9 @@ class Login extends Component {
             </div>
 
         )
+    }
+    componentWillUnmount() {
+        console.log("unmouting")
     }
 }
 
@@ -152,7 +184,9 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        loginUser: bindActionCreators(loginUser, dispatch)
+        loginUser: bindActionCreators(loginUser, dispatch),
+        clearAuthRejectErrors: bindActionCreators(clearAuthRejectErrors, dispatch),
+        authSuccessRedirect: bindActionCreators(authSuccessRedirect, dispatch)
     }
 }
 
