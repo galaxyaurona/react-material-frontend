@@ -2,4 +2,9 @@ a {
   color: white; }
   a:hover, a:focus {
     text-decoration: none;
-    color: whitesmoke; }
+    color: #EEEEEE; }
+
+.appbar__flat-button {
+  line-height: 50px !important;
+  height: 50px !important;
+  color: white !important; }

@@ -3,28 +3,25 @@ body {
   padding: 0;
   font-family: Roboto , sans-serif;
   background-color: white;
-  background-image:
-    linear-gradient(
-      to bottom right, 
-      #E0E0E0, white
-    );
-  height:100vh
-}
+  background-image: linear-gradient(to bottom right, #9E9E9E, white);
+  height: 100vh; }
+
 #root {
-  height: 100vh
-}
-/* TODO: break this into flexbox container, veritcal and horizontal alignment*/
-.flexbox-container {
-	display: -ms-flexbox;
-	display: -webkit-flex;
-	display: flex;
+  height: 100vh; }
 
-	-ms-flex-align: center;
-	-webkit-align-items: center;
-	-webkit-box-align: center;
+.component__wrapper--full-height, .compoment__wrapper--flex-centering-all {
+  height: 100%; }
 
-	align-items: center;
-    
-    justify-content: center;
-    
-}
+.flexbox-container, .flexbox--horizontal-centering, .flexbox-centering-all, .compoment__wrapper--flex-centering-all, .flexbox--vertically-centering {
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex; }
+
+.flexbox--horizontal-centering, .flexbox-centering-all, .compoment__wrapper--flex-centering-all {
+  justify-content: center; }
+
+.flexbox--vertically-centering, .flexbox-centering-all, .compoment__wrapper--flex-centering-all {
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  align-items: center; }

@@ -1,0 +1,24 @@
+@import "./variables";
+
+.form--full-height {
+    height: 100%;
+}
+.form__header-text--custom-margin{
+    margin: 20px $paper-form--margin-left;
+}
+.hr--no-margin{
+    margin: 0px;
+}
+
+.form__text-field--full-width{
+    width: 100% !important;
+    margin-bottom:  10px;
+}
+
+
+.action-button__row{
+    margin: 20px $paper-form--margin-left;
+}
+.form__content {
+    margin:0px $paper-form--margin-left ;
+}

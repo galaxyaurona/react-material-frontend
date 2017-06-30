@@ -8,19 +8,18 @@ import { bindActionCreators } from "redux"
 import {
     TextField
 } from "redux-form-material-ui"
-import { requiredValidatorGenerator, emailValidatorGenerator } from "../../utils"
+import CircularProgress from 'material-ui/CircularProgress';
+import {
+    requiredValidatorGenerator,
+    emailValidatorGenerator,
+    renderMaterialInput
+} from "../../utils"
 
-// TODO: fix the styling here , left align stuff , add breakline on the form
+
 import "./login.css"
-// TODO: change card style into
-const cardStyle = {
-    height: 300,
-    width: 450,
-    margin: 20,
-    textAlign: 'left',
-    display: 'block',
-};
-// TODO: migrate these 2 function to separate utils file
+
+
+
 
 const emailValidation = requiredValidatorGenerator("Email is required")
 const emailRequired = emailValidatorGenerator("Please input a valid email")
@@ -30,17 +29,19 @@ const passwordRequired = requiredValidatorGenerator("Password is required")
 class Login extends Component {
     componentDidMount() {
         // focusing on email field at render
-        this.refs.email // the Field
+        /*this.refs.email // the Field
             .getRenderedComponent() // on Field, returns ReduxFormMaterialUITextField
             .getRenderedComponent() // on ReduxFormMaterialUITextField, returns TextField
-            .focus(); // on TextField
+            .focus(); // on TextField*/
     }
-
-    // TODO: fix submit doesn't 
+    componentWillUpdate(nextProps, nextState) {
+        console.log("next props", nextProps.auth)
+    }
+    // TODO: fix submit doesn't disable button
     handleOnSubmit({ email, password }) {
-        console.log("submitting,b4", this.props)
 
-        this.props.loginUser({ email, password }, response => {
+
+        return this.props.loginUser({ email, password }, response => {
             // god response from server
 
             if (response.data.success) {
@@ -54,35 +55,9 @@ class Login extends Component {
             console.log("error callback toplevel", error)
         })
     }
-    renderMaterialTextInput(field) {
-        // default params
-        if (!field.className) { field.className = "" }
-        if (!field.type) { field.type = "text" }
-        if (!field.component) { field.component = {} }
-        if (!field.hintText) { field.hintText = "Unspecified hint text" }
-        if (!field.validate) { field.validate = [] }
-        let fieldRefProps = {}
-        if (field.refProps) {
-            fieldRefProps = { ...field.refProps }
-        }
-        // prevent unspecified html attribute 
-        delete field.refProps
-        field.errorStyle = {
-            float:"left"
-        }
-        return (
 
-            <Field
-                key={field.name}
-                {...field}
-                {...fieldRefProps}
-            />
-
-
-        )
-    }
     render() {
-
+        const { handleSubmit, pristine, submitting } = this.props
         const emailField = {
             name: "email",
             type: "email",
@@ -94,7 +69,8 @@ class Login extends Component {
             refProps: {
                 ref: "email",
                 withRef: true
-            }
+            },
+            disabled: submitting,
         }
         const passwordField = {
             name: "password",
@@ -104,26 +80,53 @@ class Login extends Component {
             hintText: "Password",
             floatingLabelText: "Password",
             validate: [passwordRequired],
-
+            disabled: submitting,
         }
         const formFields = [emailField, passwordField]
-        const { handleSubmit, pristine, submitting } = this.props
+        const circularProgressProp = {
+            color: "white",
+            size: 20,
+            style:{
+                top:"8px",
+                right:"8px"
+            },
+            thickness:2
+        }
+        // TODO: display error here base on form
         return (
-            <div className="login-component__wrapper flexbox-container">
+            <div className="compoment__wrapper--flex-centering-all">
 
-                <Paper className="" style={cardStyle} zDepth={2} >
-                    <form className="login-form" onSubmit={handleSubmit(this.handleOnSubmit.bind(this))}>
-                        <h3 className="form__header-text--custom-margin ">Login</h3>
+                <Paper className="login-paper" zDepth={2} >
+                    <form className="form--full-height" onSubmit={handleSubmit(this.handleOnSubmit.bind(this))}>
+                        <h2 className="form__header-text--custom-margin ">Login</h2>
                         <hr className="hr--no-margin" />
-                        <div className="form-content">
-                            {formFields.map(field => this.renderMaterialTextInput(field), this)}
+                        <div className="form__content">
+                            {formFields.map(field => renderMaterialInput(field), this)}
                         </div>
 
 
-                        <div className="button-row">
-                           
-                            <RaisedButton className="pull-right" disabled={submitting} secondary={true} type="button" label="Sign up"></RaisedButton>
-                            <RaisedButton className="pull-right" style={{marginRight:"30px"}} disabled={submitting} primary={true} type="submit" label="Login"></RaisedButton>
+                        <div className="action-button__row">
+
+                            <RaisedButton
+                                onTouchTap={() => this.props.history.push("/signup")}
+                                className="pull-right"
+                                secondary={true}
+                                type="button"
+
+                                label="Sign up">
+
+                            </RaisedButton>
+                            <RaisedButton
+                                className="pull-right"
+                                style={{ marginRight: "20px" }}
+                                disabled={submitting}
+                                primary={true}
+                                type="submit"
+                                children={submitting ? <CircularProgress {...circularProgressProp}  /> : undefined}
+                                label="Login"
+                                labelPosition="before">
+
+                            </RaisedButton>
                         </div>
 
                     </form>

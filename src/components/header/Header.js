@@ -13,13 +13,14 @@ import "./header.css"
 // TODO: convert these right menu button to using flex box instead
 // TODO: consider moving These button tho it's own file
 const RightMenuNotLoggedIn = (props) => {
+    
     return (
-        <div className="flexbox-container">
+        <div className="flex-centering-all">
             <Link to="/login" >
-                <FlatButton label="Login" secondary={true} />
+                <FlatButton className="appbar__flat-button" label="Login" secondary={true} />
             </Link>
             <Link to="/signup" >
-                <FlatButton label="Sign up" secondary={true} />
+                <FlatButton className="appbar__flat-button" label="Sign up" secondary={true} />
             </Link>
         </div>
 
@@ -30,15 +31,14 @@ const RightMenuNotLoggedIn = (props) => {
 class Header extends Component {
 
     render() {
-        // TODO: improve upon this styling
-        // TODO: remove Link decorator and add some hover styling
-        // TODO: change it to flexbox container
-        const style = { marginTop: "14px" }
+
+    
+
         const appBarProps = {
             title: <Link to="/">React Material</Link>,
             showMenuIconButton: this.props.auth.authenticated === true,
             iconElementRight: this.props.auth.authenticated ? <RightMenuLoggedIn /> : <RightMenuNotLoggedIn />,
-       
+          
         }
         return (
             <div className="">

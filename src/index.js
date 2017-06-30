@@ -10,7 +10,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 
 import reducers from "./reducers"
 import promiseMiddleware from "redux-promise-middleware"
-
+import thunk from 'redux-thunk';
 import { Switch, Route } from "react-router"
 import {AUTH_FULFILLED} from "./actions/types"
 import {
@@ -29,7 +29,8 @@ import { NoMatch } from "./components/no-match"
 
 const store = createStore(reducers, composeWithDevTools(
     applyMiddleware(
-        promiseMiddleware()
+        promiseMiddleware(),
+        thunk
     ),
     // other store enhancers if any
 ));

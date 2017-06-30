@@ -16,4 +16,5 @@ export const emailValidatorGenerator = (error = "Invalid email") => {
 
 export {default as registerServiceWorker, unregister as unregiserServiceWorker} from "./registerServiceWorker"
 export {API_URL} from "./constants"
+export {renderMaterialInput} from "./form"
 export default myself

@@ -7,7 +7,7 @@ import {connect} from "react-redux"
 import {bindActionCreators} from "redux"
 import {signoutUser} from "../../actions"
 class RightMenuLoggedIn extends Component{
-    // TODO : add a confirm dialog bar here if possible
+    // TODO: add a confirm dialog bar for log out here if possible
     // TODO: change this to button with avatar
     // TODO: add in notification and avatar
     handleSignOut(){
@@ -19,7 +19,7 @@ class RightMenuLoggedIn extends Component{
                 {...this.props.iconMenuProps}
                 animated
                 iconButtonElement={
-                    <IconButton><MoreVertIcon /></IconButton>
+                    <IconButton><MoreVertIcon color="white"/></IconButton>
                 }>
                 <MenuItem primaryText="Refresh" />
 

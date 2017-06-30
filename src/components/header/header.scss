@@ -1,8 +1,17 @@
+@import "../../styles/variables";
+
 a {
-  color: white;
+  color: $header__text--color;
+;
   &:hover,&:focus{
       text-decoration: none;
-      color: whitesmoke;
+      color: $header__text--color-active;
   }  
   
 }
+
+.appbar__flat-button {
+    line-height: 50px !important;
+    height: 50px !important;
+    color:$header__text--color !important
+} 
