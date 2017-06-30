@@ -19,6 +19,7 @@ import {
 } from "../../utils"
 import "./signup.css"
 import Rx from "rxjs/Rx"
+import {EMAIL_VALIDATING,EMAIL_VALIDATED,EMAIL_EXIST} from "../../actions/types"
 const emailValidation = requiredValidatorGenerator("Email is required")
 const emailRequired = emailValidatorGenerator("Please input a valid email")
 const passwordRequired = requiredValidatorGenerator("Password is required")
@@ -35,10 +36,10 @@ const passwordMatch = (value, allValues, props) => {
 // TODO: 
 // FIXME: THERE IS A GLITCH BECAUSE THROWING ERROR WITHOUT CHECKING IF CURRENT EMAIL IS EQUAL TO STATE EMAIL
 const asyncValidate = ({ email }, dispatch, props) => {
-    // TODO: use constants for this
+  
     if (email != props.signup.email) {
         dispatch({
-            type: "EMAIL_VALIDATING",
+            type: EMAIL_EXIST,
             payload: email
         })
         props.clearAsyncError()
@@ -47,7 +48,7 @@ const asyncValidate = ({ email }, dispatch, props) => {
         return axios.post(`${API_URL}/check-existing-email`, { email }).then(success => {
             let message = { email: "You can use this email", emailExist: false }
             dispatch({
-                type: "EMAIL_VALIDATED",
+                type: EMAIL_VALIDATED,
                 payload: {
                     email,
                     message
@@ -59,7 +60,7 @@ const asyncValidate = ({ email }, dispatch, props) => {
             if (error.response.status == 422) {
                 let message = { email: "This email has been used", emailExist: true }
                 dispatch({
-                    type: "EMAIL_EXIST",
+                    type: EMAIL_EXIST,
                     payload: {
                         email,
                         message
@@ -71,10 +72,11 @@ const asyncValidate = ({ email }, dispatch, props) => {
             return error.response.data
         })
     } else { // don't check the email again
+        // return immediatly resolve, throw message as error as AsyncRequire
         return new Promise(resolve => {
             if (!props.signup.emailUsable)
                 throw props.signup.message
-            console.log("resolving")
+    
             resolve()
         })
 
@@ -87,11 +89,7 @@ const asyncValidate = ({ email }, dispatch, props) => {
 }
 
 class Signup extends Component {
-    constructor(props) {
-        super(props)
 
-
-    }
     handleOnSubmit({ email, password }) {
         console.log("submitting")
         return this.props.signupUser({ email, password }, response => {
@@ -105,17 +103,10 @@ class Signup extends Component {
                 this.props.history.push("/")
             }
         }, (error) => {
-            console.log("error callback toplevel", error)
+            console.log("reject error ", error)
         })
     }
-    componentDidMount() {
 
-    }
-    
-    handleEmailChange(event) {
-
-
-    }
 
     render() {
         const { asyncValidating, handleSubmit, pristine, submitting } = this.props
@@ -188,6 +179,7 @@ class Signup extends Component {
         )
     }
     componentWillUnmount() {
+        // to ignore email checking
         this.props.unmountSignup()
     }
 }

@@ -37,7 +37,7 @@ class Login extends Component {
     componentWillUpdate(nextProps, nextState) {
         console.log("next props", nextProps.auth)
     }
-    // TODO: fix submit doesn't disable button
+  
     handleOnSubmit({ email, password }) {
 
 

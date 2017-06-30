@@ -1,6 +1,6 @@
 import axios from "axios"
 import { API_URL } from "../utils/constants"
-import { AUTH, DEAUTH, CHECK_EMAIL_EXISTING } from "./types"
+import { AUTH, DEAUTH, EMAIL_CHECKING_CANCELLED,CHECK_EMAIL_EXISTING } from "./types"
 import ReduxThunk from 'redux-thunk'
 export function loginUser({ email, password }, successCallback, errorCallback) {
     // submit email and password to user
@@ -45,7 +45,7 @@ export function checkExistingEmail(email, successCallback, errorCallback) {
 
 export function unmountSignup(){
     return {
-        type: "EMAIL_CHECKING_CANCELLED",
+        type: EMAIL_CHECKING_CANCELLED,
     
     }
 }
